@@ -1,6 +1,16 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'pages/login_page.dart';
+import 'pages/register_page.dart';
+import 'storage_manager.dart';
+
+final GlobalKey<NavigatorState> materialAppNavigatorKey =
+    GlobalKey<NavigatorState>();
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await StorageManager.init();
   runApp(const MyApp());
 }
 
@@ -10,8 +20,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final botToastBuilder = BotToastInit();
     return MaterialApp(
       title: 'Flutter Demo',
+      builder: (context, child) {
+        child = Scaffold(
+          body: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+              if (!currentFocus.hasPrimaryFocus &&
+                  currentFocus.focusedChild != null) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              }
+            },
+            child: child,
+          ),
+        );
+        child = botToastBuilder(context, child);
+        return child;
+      },
+      navigatorObservers: [BotToastNavigatorObserver(), routeObserver],
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,7 +52,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: User.getPwd() != null ? const LoginPage() : const RegisterPage(),
     );
   }
 }
