@@ -2,6 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/login_page.dart';
+import 'pages/main_tabbar.dart';
 import 'pages/register_page.dart';
 import 'storage_manager.dart';
 
@@ -51,9 +52,12 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        hintColor: Colors.grey,
+        disabledColor: Colors.grey,
       ),
       debugShowCheckedModeBanner: false,
-      home: User.getPwd() != null ? const LoginPage() : const RegisterPage(),
+      home: BottomTabScreen(),
+      // home: User.getPwd() != null ? const LoginPage() : const RegisterPage(),
     );
   }
 }

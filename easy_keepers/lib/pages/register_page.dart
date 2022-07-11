@@ -3,6 +3,8 @@ import 'package:easy_keepers/storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_pattern_locker/flutter_pattern_locker.dart';
 
+import 'main_tabbar.dart';
+
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
 
@@ -58,7 +60,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   if (this.pwd != pwd) {
                     setState(() {
                       config.isError = true;
-                      subTip = 'The trajectories of the two slides are inconsistent';
+                      subTip =
+                          'The trajectories of the two slides are inconsistent';
                     });
                   } else {
                     setState(() {
@@ -79,5 +82,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _success() {
     User.savePwd(pwd!);
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+      builder: (BuildContext context) {
+        return const BottomTabScreen();
+      },
+    ), (route) => false);
   }
 }

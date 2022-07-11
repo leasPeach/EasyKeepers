@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 class MyAppBar {
   static build(BuildContext context, dynamic title,
       {VoidCallback? onPressed,
+      Widget? left,
       List<Widget>? right,
       Color? bgColor,
       PreferredSizeWidget? bottom,
@@ -13,9 +14,10 @@ class MyAppBar {
     return AppBar(
       title: _createTitle(title),
       centerTitle: true,
-      leading: showLeft == true
-          ? _leading(context, onPressed, leadColor)
-          : Container(),
+      leading: left ??
+          (showLeft == true
+              ? _leading(context, onPressed, leadColor)
+              : Container()),
       backgroundColor: bgColor ?? AppColor.theme,
       elevation: 0,
       actions: right,
@@ -115,20 +117,20 @@ class AppWidget {
   static bottomBut(
       {required String title, void Function()? onTap, Color? bgColor}) {
     return Padding(
-      padding: EdgeInsets.only(top: 50, left: 50, right: 50),
+      padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
       child: InkWell(
         onTap: onTap,
         child: Container(
           alignment: Alignment.center,
-          child: Label(
-            text: title,
-            color: AppColor.white,
-            size: 34,
-          ),
-          height: 88,
+          height: 44,
           decoration: BoxDecoration(
             color: bgColor ?? AppColor.theme,
-            borderRadius: BorderRadius.circular(44),
+            borderRadius: BorderRadius.circular(22),
+          ),
+          child: Label(
+            text: title,
+            color: AppColor.black,
+            size: 17,
           ),
         ),
       ),
@@ -137,7 +139,7 @@ class AppWidget {
 }
 
 class AppColor {
-  static Color get theme => Colors.blue;
+  static Color get theme => const Color.fromRGBO(248, 218, 107, 1);
   static Color get white => Colors.white;
   static Color get black => const Color(0xFF212121);
   static Color get normal => const Color(0xFF777777);
@@ -222,6 +224,15 @@ class MoneyTextInputFormatter extends TextInputFormatter {
     return TextEditingValue(
       text: newvalueText,
       selection: TextSelection.collapsed(offset: newvalueText.length),
+    );
+  }
+}
+
+class MyNav {
+  static Future<T?> push<T extends Object?>(BuildContext context, Widget page) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
     );
   }
 }
